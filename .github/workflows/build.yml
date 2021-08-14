@@ -16,7 +16,10 @@ jobs:
           - macos-latest
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: asdf_plugin_test
         uses: asdf-vm/actions/plugin-test@v1
         with:
-          command: structurizr-cli
+          command: structurizr-cli validate -w ${{ github.workspace }}/test/workspace.dsl 

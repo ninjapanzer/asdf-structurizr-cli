@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for structurizr-cli.
-GH_REPO="https://github.com/amoosbr/asdf-structurizr-cli"
+GH_REPO="https://github.com/structurizr/cli"
 TOOL_NAME="structurizr-cli"
 TOOL_TEST="structurizr-cli"
 
@@ -42,7 +42,7 @@ download_release() {
   filename="$2"
 
   # TODO: Adapt the release URL convention for structurizr-cli
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  url="$GH_REPO/releases/download/v${version}/structurizr-cli-${version}.zip"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -61,10 +61,17 @@ install_version() {
     mkdir -p "$install_path"
     cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
+    mkdir -p "$install_path/bin"
+    # ls -al "$install_path"
+    # ln -s "../structurizr.sh" "$install_path/bin/structurizr-cli"
+    # ls -al "$install_path/bin"
+    mv "$install_path/structurizr.sh" "$install_path/bin/structurizr-cli"
+    mv "$install_path"/structurizr-cli*.jar "$install_path/bin/"
+
     # TODO: Asert structurizr-cli executable exists.
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
-    test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd to be executable."
+    test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd"
 
     echo "$TOOL_NAME $version installation was successful!"
   ) || (
