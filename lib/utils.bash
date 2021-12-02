@@ -61,17 +61,14 @@ install_version() {
     mkdir -p "$install_path"
     cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-    mkdir -p "$install_path/bin"
-    # ls -al "$install_path"
-    # ln -s "../structurizr.sh" "$install_path/bin/structurizr-cli"
-    # ls -al "$install_path/bin"
-    mv "$install_path/structurizr.sh" "$install_path/bin/structurizr-cli"
-    mv "$install_path"/structurizr-cli*.jar "$install_path/bin/"
+    # want to call structurizr-cli
+    mv "$install_path/structurizr.sh" "$install_path/structurizr-cli"
 
-    # TODO: Asert structurizr-cli executable exists.
+    # Assert structurizr-cli executable exists.
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
-    test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd"
+    # test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd"
+    test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd"
 
     echo "$TOOL_NAME $version installation was successful!"
   ) || (
