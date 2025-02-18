@@ -19,6 +19,17 @@ if [ -n "${GITHUB_API_TOKEN:-}" ]; then
   curl_opts=("${curl_opts[@]}" -H "Authorization: token $GITHUB_API_TOKEN")
 fi
 
+check_version_format() {
+  local input_string="$1"
+  local regex="^[0-9]{4}.[0-9]{2}.[0-9]{2}$"
+
+  if [[ $input_string =~ $regex ]]; then
+    echo ""
+  else
+    echo "$input_string"
+  fi
+}
+
 sort_versions() {
   sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
     LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
@@ -37,12 +48,13 @@ list_all_versions() {
 }
 
 download_release() {
-  local version filename url
+  local version filename file_version url
   version="$1"
   filename="$2"
 
+  file_version=$(check_version_format "$version")
   # TODO: Adapt the release URL convention for structurizr-cli
-  url="$GH_REPO/releases/download/v${version}/structurizr-cli-${version}.zip"
+  url="$GH_REPO/releases/download/v${version}/structurizr-cli-${file_version}.zip"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
