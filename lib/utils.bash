@@ -26,7 +26,7 @@ check_version_format() {
   if [[ $input_string =~ $regex ]]; then
     echo ""
   else
-    echo "$input_string"
+    echo "-$input_string"
   fi
 }
 
@@ -54,7 +54,7 @@ download_release() {
 
   file_version=$(check_version_format "$version")
   # TODO: Adapt the release URL convention for structurizr-cli
-  url="$GH_REPO/releases/download/v${version}/structurizr-cli-${file_version}.zip"
+  url="$GH_REPO/releases/download/v${version}/structurizr-cli${file_version}.zip"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
