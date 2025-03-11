@@ -28,7 +28,7 @@ Plugin:
 ```shell
 asdf plugin add structurizr-cli
 # or
-asdf plugin add structurizr-cli https://github.com/amoosbr/asdf-structurizr-cli.git
+asdf plugin add structurizr-cli https://github.com/ninjapanzer/asdf-structurizr-cli.git
 ```
 
 structurizr-cli:
